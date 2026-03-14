@@ -22,5 +22,13 @@ def login():
 def register():
     return render_template("register.html")
 
+@app.route("/submit_register")
+def submit_register():
+
+
+@app.route("/submit_login")
+def submit_login():
+
+
 if __name__ == "__main__":
     app.run(debug=True)
