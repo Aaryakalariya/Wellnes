@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request
+import mysql.connector
 
 app = Flask(__name__)
 
@@ -24,10 +25,33 @@ def register():
 
 @app.route("/submit_register")
 def submit_register():
+        username = request.form["username"]
+        email = request.form["email"]
+        password = request.form["password"]
 
+        # Database connection
+        conn = mysql.connector.connect(
+            host="localhost",
+            user="root",
+            password="",
+            database="wellness"
+        )
 
-@app.route("/submit_login")
-def submit_login():
+        cursor = conn.cursor()
+
+        query = "INSERT INTO user (user_name, email, password) VALUES (%s, %s, %s)"
+        values = (username, email, password)
+
+        cursor.execute(query, values)
+        conn.commit()
+
+        cursor.close()
+        conn.close()
+
+        return redirect("/")
+
+# @app.route("/submit_login")
+# def submit_login():
 
 
 if __name__ == "__main__":
