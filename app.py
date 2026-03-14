@@ -23,7 +23,7 @@ def login():
 def register():
     return render_template("register.html")
 
-@app.route("/submit_register")
+@app.route("/submit_register",methods=["POST","GET"])
 def submit_register():
         username = request.form["username"]
         email = request.form["email"]
@@ -33,8 +33,8 @@ def submit_register():
         conn = mysql.connector.connect(
             host="localhost",
             user="root",
-            password="",
-            database="wellness"
+            password="root",
+            database="wellnes"
         )
 
         cursor = conn.cursor()
@@ -48,7 +48,7 @@ def submit_register():
         cursor.close()
         conn.close()
 
-        return redirect("/")
+        return render_template("/login.html")
 
 # @app.route("/submit_login")
 # def submit_login():
