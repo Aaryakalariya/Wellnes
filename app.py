@@ -19,6 +19,36 @@ def medicine():
 def login():
     return render_template("login.html")
 
+@app.route("/submit_login", methods=["POST"])
+def submit_login():
+
+    email = request.form["email"]
+    password = request.form["password"]
+
+    conn = mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="root",
+        database="wellnes"
+    )
+
+    cursor = conn.cursor()
+
+    query = "SELECT * FROM user WHERE email=%s AND password=%s"
+    values = (email, password)
+
+    cursor.execute(query, values)
+
+    user = cursor.fetchone()
+
+    cursor.close()
+    conn.close()
+
+    if user:
+        return "Login Successful"
+    else:
+        return "Invalid Email or Password"
+
 @app.route("/register")
 def register():
     return render_template("register.html")
