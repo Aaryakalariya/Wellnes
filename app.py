@@ -4,7 +4,7 @@ import mysql.connector
 app = Flask(__name__)
 app.secret_key = "wellness_secret_key"
 
-@app.route("/")
+@app.route("/",methods=["GET","POST"])
 def home():
     return render_template("index.html")
 
@@ -46,8 +46,9 @@ def submit_login():
     conn.close()
 
     if user:
-        session["username"] = user[0]
-        return "Login Successful"
+        session["username"] = user[1]
+        user = session["username"]
+        return render_template("/index.html", user=user)
     else:
         return "Invalid Email or Password"
 
