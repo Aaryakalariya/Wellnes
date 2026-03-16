@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, session, redirect
 import mysql.connector
 
 app = Flask(__name__)
@@ -45,6 +45,7 @@ def submit_login():
     conn.close()
 
     if user:
+        session["username"] = user[0]
         return "Login Successful"
     else:
         return "Invalid Email or Password"
