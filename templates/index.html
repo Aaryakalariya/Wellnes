@@ -21,6 +21,24 @@
 </head>
 <body>
 
+{% if session.get('username') %}
+    <span style="color:white; margin-right:10px;">
+        Hello {{ session['username'] }}
+    </span>
+
+    <a href="/logout" class="btn-signup d-none d-md-block">
+        Logout
+    </a>
+{% else %}
+    <a href="/login" class="btn-signup d-none d-md-block">
+        Login
+    </a>
+
+    <a href="/register" class="btn-signup d-none d-md-block">
+        Sign Up
+    </a>
+{% endif %}
+
     <!-- Floating Glass Navbar -->
     <nav id="mainNavbar" class="navbar-floating" data-testid="main-navbar">
         <div class="navbar-glass">
