@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, session, redirect
 import mysql.connector
 
 app = Flask(__name__)
+app.secret_key = "wellness_secret_key"
 
 @app.route("/")
 def home():
