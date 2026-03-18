@@ -83,8 +83,33 @@ def submit_register():
 
         return render_template("/login.html")
 
-# @app.route("/submit_login")
-# def submit_login():
+
+
+@app.route('/profile')
+def profile():
+    # Check login
+    if 'user' not in session:
+        return redirect('/login')
+
+    # Dummy data (temporary)
+    user_data = {
+        "name": session['user'],
+        "email": "user@email.com",
+        "conditions": ["Diabetes", "High Blood Pressure"],
+        "orders": [
+            {"name": "Paracetamol", "date": "12 March 2026", "status": "Delivered"},
+            {"name": "Vitamin C", "date": "5 March 2026", "status": "Pending"}
+        ],
+        "reports": ["Blood Test.pdf", "X-Ray.jpg"],
+        "analysis": "Your sugar level is slightly high.",
+        "suggestions": [
+            "Daily walking",
+            "Reduce sugar",
+            "Take medicines regularly"
+        ]
+    }
+
+    return render_template("profile.html", user_data=user_data)
 
 
 if __name__ == "__main__":

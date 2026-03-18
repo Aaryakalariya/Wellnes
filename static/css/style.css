@@ -1198,5 +1198,119 @@ transform:scale(1.05);
 }
 
 
-===============================CSS FOR LOGIN PAGE =======================================
+===============================CSS FOR profile.html  =======================================
 
+body {
+    font-family: 'DM Sans', sans-serif;
+    background: linear-gradient(to bottom right, #f8fafc, #eff6ff, #ecfeff);
+    color: #0f172a;
+}
+
+/* Container */
+.profile-container {
+    margin-top: 120px;
+    max-width: 900px;
+}
+
+/* Glass Effect */
+.glass-card {
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(24px);
+    border-radius: 20px;
+    padding: 24px;
+    margin-bottom: 24px;
+    border: 1px solid rgba(255,255,255,0.5);
+}
+
+/* Header */
+.profile-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.profile-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.profile-avatar {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(to right, #06b6d4, #3b82f6);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.profile-avatar i {
+    color: white;
+    width: 28px;
+    height: 28px;
+}
+
+.email {
+    color: #64748b;
+}
+
+/* Section */
+.section-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 22px;
+    margin-bottom: 16px;
+}
+
+/* Order */
+.order-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.status {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+}
+
+.delivered {
+    background: #dcfce7;
+    color: #16a34a;
+}
+
+.pending {
+    background: #fef3c7;
+    color: #d97706;
+}
+
+/* Reports */
+.report-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+/* Buttons */
+.btn-edit,
+.btn-upload,
+.btn-view {
+    background: linear-gradient(to right, #06b6d4, #3b82f6);
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 50px;
+    cursor: pointer;
+}
+
+.btn-upload {
+    margin-top: 12px;
+}
+
+/* Analysis */
+.analysis-text {
+    color: #475569;
+}
