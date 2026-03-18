@@ -33,9 +33,9 @@ def submit_login():
         database="wellnes"
     )
 
-    cursor = conn.cursor()
+    cursor = conn.cursor(buffered=True)
 
-    query = "SELECT * FROM user WHERE email=%s AND password=%s"
+    query = "SELECT * FROM users WHERE email=%s AND password=%s"
     values = (email, password)
 
     cursor.execute(query, values)
@@ -72,7 +72,7 @@ def submit_register():
 
         cursor = conn.cursor()
 
-        query = "INSERT INTO user (user_name, email, password) VALUES (%s, %s, %s)"
+        query = "INSERT INTO users (user_name, email, password) VALUES (%s, %s, %s)"
         values = (username, email, password)
 
         cursor.execute(query, values)
@@ -87,30 +87,131 @@ def submit_register():
 
 @app.route('/profile')
 def profile():
-    # Check login
-    if 'user' not in session:
+    if 'username' not in session:
         return redirect('/login')
 
-    # Dummy data (temporary)
+    conn = mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="root",
+        database="wellnes"
+    )
+
+    cursor = conn.cursor(dictionary=True, buffered=True)
+
+    query = "SELECT * FROM users WHERE user_name=%s"
+    cursor.execute(query, (session['username'],))
+
+    user = cursor.fetchone()
+
+    cursor.close()
+    conn.close()
+
+    # Handle conditions
+    if user.get("conditions"):
+        conditions = user["conditions"].split(",")
+    else:
+        conditions = []
+
     user_data = {
-        "name": session['user'],
-        "email": "user@email.com",
-        "conditions": ["Diabetes", "High Blood Pressure"],
-        "orders": [
-            {"name": "Paracetamol", "date": "12 March 2026", "status": "Delivered"},
-            {"name": "Vitamin C", "date": "5 March 2026", "status": "Pending"}
-        ],
-        "reports": ["Blood Test.pdf", "X-Ray.jpg"],
-        "analysis": "Your sugar level is slightly high.",
-        "suggestions": [
-            "Daily walking",
-            "Reduce sugar",
-            "Take medicines regularly"
-        ]
+        "name": user["user_name"],
+        "email": user["email"],
+        "conditions": conditions,
+        "orders": [],
+        "reports": [],
+        "analysis": "AI health summary will appear here.",
+        "suggestions": conditions  # temporary
     }
 
     return render_template("profile.html", user_data=user_data)
 
+@app.route("/edit-profile")
+def edit_profile():
+    if 'username' not in session:
+        return redirect('/login')
 
+    conn = mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="root",
+        database="wellnes"
+    )
+
+    cursor = conn.cursor(dictionary=True, buffered=True)
+
+    query = "SELECT * FROM users WHERE user_name=%s"
+    cursor.execute(query, (session['username'],))
+
+    user = cursor.fetchone()
+
+    cursor.close()
+    conn.close()
+
+
+    return render_template("edit-profile.html", user=user)
+
+@app.route("/update-profile", methods=["POST"])
+def update_profile():
+
+    if 'username' not in session:
+        return redirect('/login')
+
+    username = request.form["username"]
+    email = request.form["email"]
+    password = request.form["password"]
+
+    conditions = request.form.getlist("conditions")
+    conditions_str = ",".join(conditions)
+
+    conn = mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="root",
+        database="wellnes"
+    )
+
+    cursor = conn.cursor(buffered=True)
+
+    query = """
+        UPDATE users 
+        SET user_name=%s, email=%s, password=%s, conditions=%s 
+        WHERE user_name=%s
+    """
+
+    cursor.execute(query, (username, email, password, conditions_str, session['username']))
+    conn.commit()
+
+    cursor.close()
+    conn.close()
+
+    session["username"] = username
+
+    return redirect("/profile")
+
+@app.route("/delete_account", methods=["POST"])
+def delete_account():
+
+    if 'username' not in session:
+        return redirect('/login')
+
+    conn = mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="root",
+        database="wellnes"
+    )
+
+    cursor = conn.cursor(buffered=True)
+
+    query = "DELETE FROM users WHERE user_name=%s"
+    cursor.execute(query, (session['username'],))
+    conn.commit()
+
+    cursor.close()
+    conn.close()
+
+    session.clear()
+
+    return redirect("/")
 if __name__ == "__main__":
     app.run(debug=True)

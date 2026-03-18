@@ -1269,6 +1269,7 @@ body {
     align-items: center;
     padding: 12px 0;
     border-bottom: 1px solid #e2e8f0;
+    width:360px;
 }
 
 .status {
@@ -1292,6 +1293,7 @@ body {
     display: flex;
     justify-content: space-between;
     margin-bottom: 10px;
+
 }
 
 /* Buttons */
@@ -1313,4 +1315,104 @@ body {
 /* Analysis */
 .analysis-text {
     color: #475569;
+}
+
+============================= css for edit profile =================================
+body {
+    font-family: 'Outfit', sans-serif;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin-bottom:30px;
+}
+
+
+.card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(15px);
+    padding: 30px;
+    border-radius: 20px;
+    width: 600px;
+    color: lightblue;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    margin-top:70px;
+}
+
+h2, h3 {
+    text-align: center;
+}
+
+.input-group {
+    margin-bottom: 15px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+}
+
+.conditions-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin: 20px 0;
+    color:black;
+}
+
+.conditions-grid label {
+    background: rgba(255,255,255,0.2);
+    padding: 8px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.conditions-grid input {
+    margin-right: 8px;
+}
+
+.btn-save {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    background: #00c6ff;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.btn-delete {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    background: red;
+    color: white;
+    font-size: 16px;
+    margin-top: 15px;
+    cursor: pointer;
+}
+
+.btn-save:hover {
+    background: #0096c7;
+}
+
+.btn-delete:hover {
+    background: darkred;
 }

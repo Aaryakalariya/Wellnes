@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Profile</title>
-    <meta charset="UTF-8">
+    <title>profile-edit</title>
+     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wellness - Your Health Simplified</title>
 
@@ -22,6 +22,15 @@
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </head>
 <body>
+
+    <span style="color:white; margin-right:10px;">
+        Hello {{ user }}
+    </span>
+
+    <a href="/logout" class="btn-signup d-none d-md-block">
+        Logout
+    </a>
+
 
     <!-- Floating Glass Navbar -->
     <nav id="mainNavbar" class="navbar-floating" data-testid="main-navbar">
@@ -50,9 +59,9 @@
                         <i data-lucide="shopping-cart"></i>
                         <span class="badge-notification">3</span>
                     </button>
-                    <button class="icon-btn" data-testid="profile-button">
-                        <i data-lucide="user"></i>
-                    </button>
+                    <a href="/profile">
+    <i data-lucide="user"></i>
+</a>
                     <button class="btn-signup d-none d-md-block" data-testid="signup-button"> <a href="/register">Sign Up</a>
                     </button>
                     <button class="icon-btn d-lg-none" id="mobileMenuToggle" data-testid="mobile-menu-button">
@@ -75,92 +84,73 @@
         </div>
     </div>
 
-<!--    main secotion -->
+    <div class="container">
 
-<div class="container profile-container">
+    <div class="card">
+        <h2>Edit Profile</h2>
 
-    <!-- PROFILE HEADER -->
-    <div class="profile-header glass-card">
-        <div class="profile-left">
-            <div class="profile-avatar">
-                <i data-lucide="user"></i>
+        <form action="/update_profile" method="POST">
+
+            <div class="input-group">
+                <label>Name</label>
+                <input type="text" name="username" value="{{ user.user_name }}">
             </div>
-            <div>
-                <h2>{{ user_data.name }}</h2>
-<p>{{ user_data.email }}</p>
+
+            <div class="input-group">
+                <label>Email</label>
+                <input type="email" name="email" value="{{ user.email }}">
             </div>
-        </div>
-<button class="btn-edit">
-    <a href="/edit-profile">Edit Profile</a>
-</button>
-    </div>
 
+            <div class="input-group">
+                <label>New Password</label>
+                <input type="password" name="password" placeholder="Enter new password">
+            </div>
 
-    <!-- MEDICAL CONDITION -->
-    <div class="section-card glass-card">
-        <h3 class="section-title">Medical Condition</h3>
-        <ul>
-    {% for condition in user_data.conditions %}
-        <li>{{ condition }}</li>
-    {% endfor %}
-</ul>
-    </div>
+            <h3>Select Health Conditions</h3>
 
+            <div class="conditions-grid">
 
-    <!-- ORDER HISTORY -->
-    <div class="section-card glass-card">
-        <h3 class="section-title">Order History</h3>
+                <!-- 25 Conditions -->
+                <label><input type="checkbox" name="conditions" value="Diabetes"> Diabetes</label>
+                <label><input type="checkbox" name="conditions" value="High BP"> High BP</label>
+                <label><input type="checkbox" name="conditions" value="Low BP"> Low BP</label>
+                <label><input type="checkbox" name="conditions" value="B12 Deficiency"> B12 Deficiency</label>
+                <label><input type="checkbox" name="conditions" value="Iron Deficiency"> Iron Deficiency</label>
+                <label><input type="checkbox" name="conditions" value="Vitamin D Deficiency"> Vitamin D Deficiency</label>
+                <label><input type="checkbox" name="conditions" value="Thyroid"> Thyroid</label>
+                <label><input type="checkbox" name="conditions" value="Cholesterol"> Cholesterol</label>
+                <label><input type="checkbox" name="conditions" value="Obesity"> Obesity</label>
+                <label><input type="checkbox" name="conditions" value="Asthma"> Asthma</label>
+                <label><input type="checkbox" name="conditions" value="Heart Disease"> Heart Disease</label>
+                <label><input type="checkbox" name="conditions" value="Kidney Issue"> Kidney Issue</label>
+                <label><input type="checkbox" name="conditions" value="Liver Issue"> Liver Issue</label>
+                <label><input type="checkbox" name="conditions" value="Migraine"> Migraine</label>
+                <label><input type="checkbox" name="conditions" value="Anxiety"> Anxiety</label>
+                <label><input type="checkbox" name="conditions" value="Depression"> Depression</label>
+                <label><input type="checkbox" name="conditions" value="Arthritis"> Arthritis</label>
+                <label><input type="checkbox" name="conditions" value="Back Pain"> Back Pain</label>
+                <label><input type="checkbox" name="conditions" value="PCOS"> PCOS</label>
+                <label><input type="checkbox" name="conditions" value="Skin Allergy"> Skin Allergy</label>
+                <label><input type="checkbox" name="conditions" value="Hair Fall"> Hair Fall</label>
+                <label><input type="checkbox" name="conditions" value="Eye Problem"> Eye Problem</label>
+                <label><input type="checkbox" name="conditions" value="Dental Issue"> Dental Issue</label>
+                <label><input type="checkbox" name="conditions" value="Sleep Disorder"> Sleep Disorder</label>
+                <label><input type="checkbox" name="conditions" value="Digestive Issue"> Digestive Issue</label>
 
-        {% for order in user_data.orders %}
-<div class="order-item">
-    <div>
-        <h5>{{ order.name }}</h5>
-        <p>Ordered on: {{ order.date }}</p>
-    </div>
-    <span class="status">{{ order.status }}</span>
-</div>
-{% endfor %}
-            <span class="status pending">Pending</span>
-        </div>
-    </div>
+            </div>
 
+            <button class="btn-save">Update Profile</button>
+        </form>
 
-    <!-- UPLOADED REPORTS -->
-    <div class="section-card glass-card">
-        <h3 class="section-title">Medical Reports</h3>
+        <form action="/delete_account" method="POST">
+            <button class="btn-delete">Delete Account</button>
+        </form>
 
-        {% for report in user_data.reports %}
-<div class="report-item">
-    <span>{{ report }}</span>
-    <button class="btn-view">View</button>
-</div>
-{% endfor %}
-
-        <button class="btn-upload">Upload New Report</button>
-    </div>
-
-
-    <!-- AI ANALYSIS -->
-    <div class="section-card glass-card">
-        <h3 class="section-title">AI Health Analysis</h3>
-
-        <p>{{ user_data.analysis }}</p>
-
-<ul>
-    {% for s in user_data.suggestions %}
-        <li>{{ s }}</li>
-    {% endfor %}
-</ul>
     </div>
 
 </div>
-
-<script>
-    lucide.createIcons();
-</script>
-
-
- <footer class="footer">
+    <!-- Footer -->
+    <footer class="footer">
         <div class="container">
             <div class="row">
                 <div class="col-md-3">
@@ -203,5 +193,23 @@
         </div>
     </footer>
 
+    <!-- Floating AI Chatbot Button -->
+    <button class="chatbot-float" data-testid="floating-chatbot-button">
+        <i data-lucide="bot" class="chatbot-icon"></i>
+    </button>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Custom JS -->
+    <script src="script.js"></script>
+
+    <!-- Initialize Lucide Icons -->
+    <script>
+        lucide.createIcons();
+    </script>
 </body>
 </html>
