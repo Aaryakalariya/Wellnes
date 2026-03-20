@@ -79,7 +79,7 @@
         {% for product in products %}
         <div class="medicine-card">
 
-            <img src="{{ url_for('static', filename='uploads/' + product.image) }}" class="medicine-img">
+            <img src="{{ url_for('static', filename='uploads/' + (product.image or 'default.jpg')) }}" class="medicine-img">
 
             <h3>{{ product.product_name }}</h3>
             <p class="medicine-type">{{ product.category }}</p>
