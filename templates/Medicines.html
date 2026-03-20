@@ -72,160 +72,30 @@
 
 <section class="medicine-page">
 
-<h2 class="page-title">Medicines</h2>
+    <h2 class="page-title">Medicines</h2>
 
-<div class="medicine-grid">
-<!-- Product 1 -->
-<div class="medicine-card">
-<img src="{{ url_for('static',filename='uploads/paracetamol.jpg')}}" class="medicine-img">
-<h3>Paracetamol Tablet</h3>
-<p class="medicine-type">Tablet</p>
-<p class="rating">⭐ 4.5 (120 reviews)</p>
-<p class="price">₹120</p>
-<button class="add-cart">Add to cart</button>
-</div>
+    <div class="medicine-grid">
 
-<!-- Product 2 -->
-<div class="medicine-card">
-<img src="{{ url_for('static',filename='uploads/Vitamin-c.png')}}"  class="medicine-img">
-<h3>Vitamin C Tablets</h3>
-<p class="medicine-type">Tablet</p>
-<p class="rating">⭐ 4.2 (80 reviews)</p>
-<p class="price">₹250</p>
-<button class="add-cart">Add to cart</button>
-</div>
+        {% for product in products %}
+        <div class="medicine-card">
 
-<!-- Product 3 -->
-<div class="medicine-card">
-<img src="{{ url_for('static',filename='uploads/Calcium.jpg')}}"  class="medicine-img">
-<h3>Calcium Supplement</h3>
-<p class="medicine-type">Capsule</p>
-<p class="rating">⭐ 4.6 (90 reviews)</p>
-<p class="price">₹399</p>
-<button class="add-cart">Add to cart</button>
-</div>
+            <img src="{{ url_for('static', filename='uploads/' + product.image) }}" class="medicine-img">
 
-<!-- Product 4 -->
-<div class="medicine-card">
-<img src="{{ url_for('static',filename='uploads/Protine-powder.jpg')}}"  class="medicine-img">
-<h3>Protein Powder</h3>
-<p class="medicine-type">Health Supplement</p>
-<p class="rating">⭐ 4.4</p>
-<p class="price">₹899</p>
-<button class="add-cart">Add to cart</button>
-</div>
+            <h3>{{ product.product_name }}</h3>
+            <p class="medicine-type">{{ product.category }}</p>
+            <p class="rating">⭐ {{ product.rating }}</p>
+            <p class="price">₹{{ product.price }}</p>
 
-<!-- Product 5 -->
-<div class="medicine-card">
-<img src="{{ url_for('static',filename='uploads/Iron-tab.jpg')}}"  class="medicine-img">
-<h3>Iron Tablets</h3>
-<p class="medicine-type">Tablet</p>
-<p class="rating">⭐ 4.3</p>
-<p class="price">₹180</p>
-<button class="add-cart">Add to cart</button>
-</div>
+            <form method="POST" action="/add_to_cart">
+                <input type="hidden" name="product_id" value="{{ product.product_id }}">
+                <button type="submit" class="add-cart">Add to cart</button>
+            </form>
 
-<!-- Product 6 -->
-<div class="medicine-card">
-<img src="{{ url_for('static',filename='uploads/Multivitamin.jpg')}}"  class="medicine-img">
-<h3>Multivitamin</h3>
-<p class="medicine-type">Capsule</p>
-<p class="rating">⭐ 4.7</p>
-<p class="price">₹506</p>
-<button class="add-cart">Add to cart</button>
-</div>
+        </div>
+        {% endfor %}
 
-<!-- Product 7 -->
-<div class="medicine-card">
-<img src="{{ url_for('static',filename='uploads/Omega-3.jpg')}}"  class="medicine-img">
-<h3>Omega 3 Capsules</h3>
-<p class="medicine-type">Capsule</p>
-<p class="rating">⭐ 4.5</p>
-<p class="price">₹699</p>
-<button class="add-cart">Add to cart</button>
-</div>
+    </div>
 
-<!-- Product 8 -->
-<div class="medicine-card">
-<img src="{{ url_for('static',filename='uploads/Energy-Boost.jpg')}}"  class="medicine-img">
-<h3>Energy Booster</h3>
-<p class="medicine-type">Supplement</p>
-<p class="rating">⭐ 4.1</p>
-<p class="price">₹349</p>
-<button class="add-cart">Add to cart</button>
-</div>
-
-<!-- Product 9 -->
-<div class="medicine-card">
-<img src="{{ url_for('static',filename='uploads/Digestive-tab.jpg')}}"  class="medicine-img">
-<h3>Digestive Tablets</h3>
-<p class="medicine-type">Tablet</p>
-<p class="rating">⭐ 4.0</p>
-<p class="price">₹199</p>
-<button class="add-cart">Add to cart</button>
-</div>
-
-<!-- Product 10 -->
-<div class="medicine-card">
-<img src="{{ url_for('static',filename='uploads/Cold-relif.jpg')}}"  class="medicine-img">
-<h3>Cold Relief</h3>
-<p class="medicine-type">Tablet</p>
-<p class="rating">⭐ 4.4</p>
-<p class="price">₹145</p>
-<button class="add-cart">Add to cart</button>
-</div>
-
-<!-- Product 11 -->
-<div class="medicine-card">
-<img src="{{ url_for('static',filename='uploads/Immunity-boost.jpg')}}"  class="medicine-img">
-<h3>Immunity Booster</h3>
-<p class="medicine-type">Capsule</p>
-<p class="rating">⭐ 4.6</p>
-<p class="price">₹299</p>
-<button class="add-cart">Add to cart</button>
-</div>
-
-<!-- Product 12 -->
-<div class="medicine-card">
-<img src="{{ url_for('static',filename='uploads/Zinc.jpg')}}"  class="medicine-img">
-<h3>Zinc Tablets</h3>
-<p class="medicine-type">Tablet</p>
-<p class="rating">⭐ 4.2</p>
-<p class="price">₹210</p>
-<button class="add-cart">Add to cart</button>
-</div>
-
-<!-- Product 13 -->
-<div class="medicine-card">
-<img src="{{ url_for('static',filename='uploads/Hair-vitamin.jpg')}}"  class="medicine-img">
-<h3>Hair Vitamins</h3>
-<p class="medicine-type">Capsule</p>
-<p class="rating">⭐ 4.3</p>
-<p class="price">₹420</p>
-<button class="add-cart">Add to cart</button>
-</div>
-
-<!-- Product 14 -->
-<div class="medicine-card">
-<img src="{{ url_for('static',filename='uploads/joint.jpg')}}"  class="medicine-img">
-<h3>Joint Care</h3>
-<p class="medicine-type">Tablet</p>
-<p class="rating">⭐ 4.5</p>
-<p class="price">₹550</p>
-<button class="add-cart">Add to cart</button>
-</div>
-
-<!-- Product 15 -->
-<div class="medicine-card">
-<img src="{{ url_for('static',filename='uploads/Skin.jpg')}}"  class="medicine-img">
-<h3>Skin Health Tablets</h3>
-<p class="medicine-type">Tablet</p>
-<p class="rating">⭐ 4.1</p>
-<p class="price">₹320</p>
-<button class="add-cart">Add to cart</button>
-</div>
-
-</div>
 </section>
 
 
