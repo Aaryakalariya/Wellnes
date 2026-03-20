@@ -12,9 +12,86 @@ def home():
 def chat():
     return render_template("Chat-bot.html")
 
+# DB CONNECTION FUNCTION (ADD THIS ON TOP)
+def get_db():
+    return mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="root",
+        database="wellnes"
+    )
+
+
+# ✅ MEDICINES PAGE (NOW FROM DATABASE)
 @app.route("/Medicines")
 def medicine():
-    return render_template("Medicines.html")
+
+    conn = get_db()
+    cursor = conn.cursor(dictionary=True)
+
+    cursor.execute("SELECT * FROM products")
+    products = cursor.fetchall()
+
+    cursor.close()
+    conn.close()
+
+    return render_template("Medicines.html", products=products)
+
+
+# ✅ ADD TO CART (USER BASED)
+@app.route("/add_to_cart", methods=["POST"])
+def add_to_cart():
+
+    if "username" not in session:
+        return redirect("/login")
+
+    product_id = request.form.get("product_id")
+    username = session["username"]
+
+    conn = get_db()
+    cursor = conn.cursor(dictionary=True)
+
+    # 1. CHECK IF CART EXISTS
+    cursor.execute("SELECT * FROM cart WHERE user_name=%s", (username,))
+    cart = cursor.fetchone()
+
+    if not cart:
+        cursor.execute("INSERT INTO cart (user_name) VALUES (%s)", (username,))
+        conn.commit()
+
+        cursor.execute("SELECT * FROM cart WHERE user_name=%s", (username,))
+        cart = cursor.fetchone()
+
+    cart_id = cart["cart_id"]
+
+    # 2. CHECK IF PRODUCT ALREADY IN CART
+    cursor.execute("""
+        SELECT * FROM cart_items 
+        WHERE cart_id=%s AND product_id=%s
+    """, (cart_id, product_id))
+
+    item = cursor.fetchone()
+
+    if item:
+        # Increase quantity
+        cursor.execute("""
+            UPDATE cart_items 
+            SET quantity = quantity + 1
+            WHERE cart_id=%s AND product_id=%s
+        """, (cart_id, product_id))
+    else:
+        # Insert new item
+        cursor.execute("""
+            INSERT INTO cart_items (cart_id, product_id, quantity, price_at_time)
+            SELECT %s, product_id, 1, price FROM products WHERE product_id=%s
+        """, (cart_id, product_id))
+
+    conn.commit()
+
+    cursor.close()
+    conn.close()
+
+    return redirect("/Medicines")
 
 @app.route("/login")
 def login():
