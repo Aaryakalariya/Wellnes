@@ -12,13 +12,15 @@
 
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
-
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ url_for('static',filename='css/style.css')}}">
 
-    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
 </head>
 <body>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+    <script src="{{ url_for('static',filename='js/chat.js') }}"></script>
 
     <!-- Floating Glass Navbar -->
     <nav id="mainNavbar" class="navbar-floating" data-testid="main-navbar">
@@ -159,4 +161,5 @@
     </footer>
 
 </body>
+
 </html>
