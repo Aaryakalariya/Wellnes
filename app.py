@@ -94,7 +94,7 @@ def add_to_cart():
 
 @app.route("/login")
 def login():
-    cursor = conn.cursor(buffered=True)
+
     return render_template("login.html")
 
 
@@ -198,8 +198,7 @@ def edit_profile():
         return redirect('/login')
 
     conn = get_db()
-    cursor = conn.cursor(dictionary=True)
-
+    cursor = conn.cursor(dictionary=True, buffered=True)
     cursor.execute("SELECT * FROM users WHERE user_name=%s", (session['username'],))
     user = cursor.fetchone()
 
