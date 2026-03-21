@@ -27,8 +27,7 @@ def get_db():
 def medicine():
 
     conn = get_db()
-    cursor = conn.cursor(dictionary=True)
-
+    cursor = conn.cursor(dictionary=True, buffered=True)
     cursor.execute("SELECT * FROM products")
     products = cursor.fetchall()
 
@@ -49,8 +48,7 @@ def add_to_cart():
     username = session["username"]
 
     conn = get_db()
-    cursor = conn.cursor(dictionary=True)
-
+    cursor = conn.cursor(dictionary=True, buffered=True)
     # 1. CHECK IF CART EXISTS
     cursor.execute("SELECT * FROM cart WHERE user_name=%s", (username,))
     cart = cursor.fetchone()
@@ -70,7 +68,8 @@ def add_to_cart():
         WHERE cart_id=%s AND product_id=%s
     """, (cart_id, product_id))
 
-    item = cursor.fetchone()
+    user = cursor.fetchone()
+    cursor.fetchall()
 
     if item:
         # Increase quantity
@@ -95,7 +94,9 @@ def add_to_cart():
 
 @app.route("/login")
 def login():
+    cursor = conn.cursor(buffered=True)
     return render_template("login.html")
+
 
 @app.route("/submit_login", methods=["POST"])
 def submit_login():
@@ -168,10 +169,11 @@ def profile():
         return redirect('/login')
 
     conn = get_db()
-    cursor = conn.cursor(dictionary=True)
-
+    cursor = conn.cursor(dictionary=True, buffered=True)
     cursor.execute("SELECT * FROM users WHERE user_name=%s", (session['username'],))
     user = cursor.fetchone()
+
+    cursor.fetchall()
 
     cursor.close()
     conn.close()
@@ -208,7 +210,7 @@ def edit_profile():
 
     return render_template("edit-profile.html", user=user, user_conditions=user_conditions)
 
-@app.route("/update-profile", methods=["POST"])
+@app.route("/update-profile", methods=[ "POST"])
 def update_profile():
 
     if 'username' not in session:
@@ -226,14 +228,14 @@ def update_profile():
 
     if password:  # ✅ only update password if entered
         query = """
-            UPDATE users 
+            UPDATE users
             SET user_name=%s, email=%s, password=%s, conditions=%s 
             WHERE user_name=%s
         """
         cursor.execute(query, (username, email, password, conditions_str, session['username']))
     else:
         query = """
-            UPDATE users 
+            UPDATE users
             SET user_name=%s, email=%s, conditions=%s 
             WHERE user_name=%s
         """
@@ -269,10 +271,11 @@ def delete_account():
     return redirect("/")
 
 
-# @app.route("/cart")
-# def cart():
-#     if 'username' not in session:
-#         return redirect('/login')
+@app.route("/cart")
+def cart():
+
+    if 'username' not in session:
+        return redirect('/login')
 
 if __name__ == "__main__":
     app.run(debug=True)
