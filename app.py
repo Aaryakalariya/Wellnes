@@ -290,5 +290,28 @@ def delete_account():
     session.clear()
 
     return redirect("/")
+
+
+from flask import Flask, render_template, request, redirect, session
+import mysql.connector
+
+app = Flask(__name__)
+app.secret_key = "your_secret"
+
+db = mysql.connector.connect(
+    host="localhost",
+    user="root",
+    password="",
+    database="wellness"
+)
+
+cursor = db.cursor(dictionary=True)
+
+
+@app.route("/cart")
+def cart():
+    if 'username' not in session:
+        return redirect('/login')
+
 if __name__ == "__main__":
     app.run(debug=True)

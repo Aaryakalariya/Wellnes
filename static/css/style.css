@@ -1198,5 +1198,86 @@ transform:scale(1.05);
 }
 
 
-===============================CSS FOR LOGIN PAGE =======================================
+===============================CSS FOR cart PAGE =======================================
 
+body {
+    font-family: 'DM Sans', sans-serif;
+    background: linear-gradient(to bottom right, #f8fafc, #eff6ff, #ecfeff);
+}
+
+.page-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 40px;
+    margin-bottom: 30px;
+}
+
+/* Cart Card */
+.cart-card {
+    background: rgba(255,255,255,0.6);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    padding: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.cart-info h5 {
+    margin: 0;
+}
+
+.cart-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-qty {
+    border: none;
+    background: #e2e8f0;
+    padding: 5px 10px;
+    border-radius: 10px;
+}
+
+.btn-remove {
+    background: red;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 10px;
+}
+
+/* Summary */
+.summary-card {
+    margin-top: 30px;
+    padding: 30px;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.7);
+    backdrop-filter: blur(20px);
+}
+
+.btn-place-order {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(to right, #06b6d4, #3b82f6);
+    color: white;
+    border: none;
+    border-radius: 30px;
+}
+
+/* Popup */
+.order-popup {
+    position: fixed;
+    inset: 0;
+    display: none;
+    background: rgba(0,0,0,0.3);
+    justify-content: center;
+    align-items: center;
+}
+
+.popup-content {
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    text-align: center;
+}

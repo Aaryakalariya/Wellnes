@@ -302,3 +302,78 @@ function sendMessage() {
         chatMessages.scrollTop = chatMessages.scrollHeight;
     }, 800);
 }
+
+
+
+//======================= JS for cart =======================
+
+let cart = [
+    { name: "Paracetamol", price: 50, qty: 1 },
+    { name: "Vitamin C", price: 120, qty: 1 }
+];
+
+function renderCart() {
+    let container = document.getElementById("cartItems");
+    container.innerHTML = "";
+
+    let total = 0;
+    let items = 0;
+
+    cart.forEach((item, index) => {
+        total += item.price * item.qty;
+        items += item.qty;
+
+        container.innerHTML += `
+        <div class="cart-card">
+            <div class="cart-info">
+                <h5>${item.name}</h5>
+                <p>₹ ${item.price}</p>
+            </div>
+
+            <div class="cart-actions">
+                <button class="btn-qty" onclick="changeQty(${index}, -1)">-</button>
+                <span>${item.qty}</span>
+                <button class="btn-qty" onclick="changeQty(${index}, 1)">+</button>
+                <button class="btn-remove" onclick="removeItem(${index})">X</button>
+            </div>
+        </div>
+        `;
+    });
+
+    document.getElementById("totalPrice").innerText = total;
+    document.getElementById("totalItems").innerText = items;
+}
+
+function changeQty(index, change) {
+    cart[index].qty += change;
+
+    if (cart[index].qty <= 0) {
+        cart.splice(index, 1);
+    }
+
+    renderCart();
+}
+
+function removeItem(index) {
+    cart.splice(index, 1);
+    renderCart();
+}
+
+function placeOrder() {
+    let details = document.getElementById("orderDetails");
+    details.innerHTML = "";
+
+    cart.forEach(item => {
+        details.innerHTML += `<p>${item.name} x ${item.qty}</p>`;
+    });
+
+    document.getElementById("orderPopup").style.display = "flex";
+}
+
+function closePopup() {
+    document.getElementById("orderPopup").style.display = "none";
+    cart = [];
+    renderCart();
+}
+
+renderCart();
