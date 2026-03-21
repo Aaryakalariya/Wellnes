@@ -167,28 +167,16 @@ def profile():
     if 'username' not in session:
         return redirect('/login')
 
-    conn = mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="root",
-        database="wellnes"
-    )
+    conn = get_db()
+    cursor = conn.cursor(dictionary=True)
 
-    cursor = conn.cursor(dictionary=True, buffered=True)
-
-    query = "SELECT * FROM users WHERE user_name=%s"
-    cursor.execute(query, (session['username'],))
-
+    cursor.execute("SELECT * FROM users WHERE user_name=%s", (session['username'],))
     user = cursor.fetchone()
 
     cursor.close()
     conn.close()
 
-    # Handle conditions
-    if user.get("conditions"):
-        conditions = user["conditions"].split(",")
-    else:
-        conditions = []
+    conditions = user["conditions"].split(",") if user.get("conditions") else []
 
     user_data = {
         "name": user["user_name"],
@@ -197,7 +185,7 @@ def profile():
         "orders": [],
         "reports": [],
         "analysis": "AI health summary will appear here.",
-        "suggestions": conditions  # temporary
+        "suggestions": conditions
     }
 
     return render_template("profile.html", user_data=user_data)
@@ -207,25 +195,18 @@ def edit_profile():
     if 'username' not in session:
         return redirect('/login')
 
-    conn = mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="root",
-        database="wellnes"
-    )
+    conn = get_db()
+    cursor = conn.cursor(dictionary=True)
 
-    cursor = conn.cursor(dictionary=True, buffered=True)
-
-    query = "SELECT * FROM users WHERE user_name=%s"
-    cursor.execute(query, (session['username'],))
-
+    cursor.execute("SELECT * FROM users WHERE user_name=%s", (session['username'],))
     user = cursor.fetchone()
 
     cursor.close()
     conn.close()
 
+    user_conditions = user["conditions"].split(",") if user.get("conditions") else []
 
-    return render_template("edit-profile.html", user=user)
+    return render_template("edit-profile.html", user=user, user_conditions=user_conditions)
 
 @app.route("/update-profile", methods=["POST"])
 def update_profile():
@@ -240,27 +221,30 @@ def update_profile():
     conditions = request.form.getlist("conditions")
     conditions_str = ",".join(conditions)
 
-    conn = mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="root",
-        database="wellnes"
-    )
+    conn = get_db()
+    cursor = conn.cursor()
 
-    cursor = conn.cursor(buffered=True)
+    if password:  # ✅ only update password if entered
+        query = """
+            UPDATE users 
+            SET user_name=%s, email=%s, password=%s, conditions=%s 
+            WHERE user_name=%s
+        """
+        cursor.execute(query, (username, email, password, conditions_str, session['username']))
+    else:
+        query = """
+            UPDATE users 
+            SET user_name=%s, email=%s, conditions=%s 
+            WHERE user_name=%s
+        """
+        cursor.execute(query, (username, email, conditions_str, session['username']))
 
-    query = """
-        UPDATE users 
-        SET user_name=%s, email=%s, password=%s, conditions=%s 
-        WHERE user_name=%s
-    """
-
-    cursor.execute(query, (username, email, password, conditions_str, session['username']))
     conn.commit()
 
     cursor.close()
     conn.close()
 
+    # ✅ Update session username
     session["username"] = username
 
     return redirect("/profile")
@@ -271,17 +255,10 @@ def delete_account():
     if 'username' not in session:
         return redirect('/login')
 
-    conn = mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="root",
-        database="wellnes"
-    )
+    conn = get_db()
+    cursor = conn.cursor()
 
-    cursor = conn.cursor(buffered=True)
-
-    query = "DELETE FROM users WHERE user_name=%s"
-    cursor.execute(query, (session['username'],))
+    cursor.execute("DELETE FROM users WHERE user_name=%s", (session['username'],))
     conn.commit()
 
     cursor.close()
@@ -292,26 +269,10 @@ def delete_account():
     return redirect("/")
 
 
-from flask import Flask, render_template, request, redirect, session
-import mysql.connector
-
-app = Flask(__name__)
-app.secret_key = "your_secret"
-
-db = mysql.connector.connect(
-    host="localhost",
-    user="root",
-    password="",
-    database="wellness"
-)
-
-cursor = db.cursor(dictionary=True)
-
-
-@app.route("/cart")
-def cart():
-    if 'username' not in session:
-        return redirect('/login')
+# @app.route("/cart")
+# def cart():
+#     if 'username' not in session:
+#         return redirect('/login')
 
 if __name__ == "__main__":
     app.run(debug=True)
